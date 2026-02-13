@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Will You Be My Valentine?</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #ffdde1 0, #ee9ca7 40%, #ff758c 100%);
+      color: #fff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Left background image */
+    body::before {
+      content: "";
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background-image: url('image_left.jpeg'); /* Change this to your left image filename */
+      background-size: contain;
+      background-position: left center;
+      background-repeat: no-repeat;
+      opacity: 0.25; /* Adjust this (0-1) to make image more/less visible */
+      z-index: -1;
+    }
+
+    /* Right background image */
+    body::after {
+      content: "";
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background-image: url('image_right.jpeg'); /* Change this to your right image filename */
+      background-size: contain;
+      background-position: right center;
+      background-repeat: no-repeat;
+      opacity: 0.25; /* Adjust this (0-1) to make image more/less visible */
+      z-index: -1;
+    }
+
+    .hearts-background {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.12;
+      background-image:
+        radial-gradient(circle at 10% 20%, #ffffff 0 6%, transparent 7%),
+        radial-gradient(circle at 80% 10%, #ffffff 0 6%, transparent 7%),
+        radial-gradient(circle at 20% 80%, #ffffff 0 6%, transparent 7%),
+        radial-gradient(circle at 90% 70%, #ffffff 0 6%, transparent 7%);
+      z-index: 0;
+    }
+
+    .floating-things {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .balloon {
+      position: absolute;
+      bottom: -120px;
+      width: 40px;
+      height: 60px;
+      border-radius: 50% 50% 45% 45%;
+      background: #ff9a9e;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      animation: floatUp 18s linear infinite;
+      opacity: 0.7;
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -18px;
+      left: 50%;
+      width: 2px;
+      height: 22px;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.7);
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -80px;
+      width: 20px;
+      height: 18px;
+      background: #ff4b6e;
+      transform: rotate(-45deg);
+      animation: floatUp 14s linear infinite;
+      opacity: 0.9;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 18px;
+      background: #ff4b6e;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    .balloon:nth-child(1) { left: 8%;  animation-duration: 20s; animation-delay: 0s; background:#ff9a9e; }
+    .balloon:nth-child(2) { left: 24%; animation-duration: 16s; animation-delay: 3s; background:#fad0c4; }
+    .balloon:nth-child(3) { left: 48%; animation-duration: 19s; animation-delay: 1s; background:#ffecd2; }
+    .balloon:nth-child(4) { left: 68%; animation-duration: 17s; animation-delay: 5s; background:#fcb1ff; }
+    .balloon:nth-child(5) { left: 86%; animation-duration: 21s; animation-delay: 2s; background:#ffb3ba; }
+
+    .heart:nth-child(6)  { left: 10%; animation-duration: 13s; animation-delay: 1s; }
+    .heart:nth-child(7)  { left: 22%; animation-duration: 11s; animation-delay: 4s; }
+    .heart:nth-child(8)  { left: 34%; animation-duration: 15s; animation-delay: 2s; }
+    .heart:nth-child(9)  { left: 46%; animation-duration: 12s; animation-delay: 5s; }
+    .heart:nth-child(10) { left: 58%; animation-duration: 14s; animation-delay: 3s; }
+    .heart:nth-child(11) { left: 70%; animation-duration: 16s; animation-delay: 0.5s; }
+    .heart:nth-child(12) { left: 82%; animation-duration: 10s; animation-delay: 2.5s; }
+    .heart:nth-child(13) { left: 16%; animation-duration: 17s; animation-delay: 6s; }
+    .heart:nth-child(14) { left: 40%; animation-duration: 18s; animation-delay: 1.5s; }
+    .heart:nth-child(15) { left: 64%; animation-duration: 13s; animation-delay: 3.5s; }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) translateX(0);
+      }
+      50% {
+        transform: translateY(-50vh) translateX(-10px);
+      }
+      100% {
+        transform: translateY(-110vh) translateX(10px);
+      }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      width: 100%;
+      margin: 0 16px;
+      padding: 40px 32px 48px;
+      min-height: 420px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(16px);
+      text-align: center;
+    }
+
+    .emoji-row {
+      font-size: 40px;
+      margin-bottom: 16px;
+    }
+
+    .title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+    }
+
+    .subtitle {
+      font-size: 16px;
+      opacity: 0.9;
+      margin-bottom: 28px;
+    }
+
+    .question {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 32px;
+    }
+
+    .buttons-wrapper {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      height: 160px;
+      margin-bottom: 28px;
+    }
+
+    .btn {
+      border: none;
+      cursor: pointer;
+      padding: 12px 30px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
+      white-space: nowrap;
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, #34c759, #00b894);
+      color: #fff;
+    }
+
+    .btn-yes:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.32);
+    }
+
+    .btn-no {
+      background: linear-gradient(135deg, #ff3b30, #ff5e62);
+      color: #fff;
+    }
+
+    .btn-no.is-melting {
+      animation: melt 0.7s forwards ease-in;
+      pointer-events: none;
+    }
+
+    @keyframes melt {
+      0% {
+        transform: translateY(0) scaleY(1);
+        filter: blur(0);
+        opacity: 1;
+      }
+      40% {
+        transform: translateY(8px) scaleY(0.8);
+        filter: blur(1px);
+      }
+      70% {
+        transform: translateY(26px) scaleY(0.3);
+        filter: blur(3px);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(40px) scaleY(0.1);
+        filter: blur(6px);
+        opacity: 0;
+      }
+    }
+
+    .btn-no.is-fading {
+      animation: fadeShrink 0.5s forwards ease-in;
+      pointer-events: none;
+    }
+
+    @keyframes fadeShrink {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(0.1);
+        opacity: 0;
+      }
+    }
+
+    .btn-no.is-spinning {
+      animation: spinDisappear 0.6s forwards ease-in;
+      pointer-events: none;
+    }
+
+    @keyframes spinDisappear {
+      0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+      }
+      60% {
+        transform: rotate(270deg) scale(0.6);
+        opacity: 0.7;
+      }
+      100% {
+        transform: rotate(360deg) scale(0.1);
+        opacity: 0;
+      }
+    }
+
+    .btn-no.is-teleporting {
+      animation: teleport 0.35s forwards ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes teleport {
+      0% {
+        transform: scale(1);
+      }
+      30% {
+        transform: scale(0.6, 1.2);
+      }
+      60% {
+        transform: scale(1.2, 0.8);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .message {
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.8;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .message.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 480px) {
+      .title {
+        font-size: 26px;
+      }
+      .question {
+        font-size: 20px;
+      }
+      .btn {
+        padding: 10px 24px;
+        font-size: 15px;
+      }
+      .container {
+        min-height: 380px;
+        padding: 32px 20px 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts-background"></div>
+
+  <div class="floating-things">
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+  </div>
+
+  <div class="container">
+    <div class="emoji-row">❤️ 💘 💖 💝 💗</div>
+    <div class="title">My Dearest Mon,</div>
+
+    <div class="question">Will you be my Valentine?</div>
+
+    <div class="subtitle">There is only one correct answer. Choose wisely. 😉</div>
+    <div class="buttons-wrapper" id="buttonsArea">
+      <button class="btn btn-yes" id="yesBtn">Yes 💚</button>
+      <button class="btn btn-no" id="noBtn">No 💔</button>
+    </div>
+
+    <div class="message" id="message">
+      Three seats hold the love we share,<br>
+      One folds down with secret care.<br>
+      Between us rests what you'll soon see—<br>
+      Till my final days, it's you and me.
+    </div>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const buttonsArea = document.getElementById("buttonsArea");
+    const message = document.getElementById("message");
+
+    buttonsArea.style.position = "relative";
+
+    function randomizeNoPosition() {
+      noBtn.style.position = "absolute";
+
+      const areaRect = buttonsArea.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
+
+      const randomX = Math.random() * maxX;
+      const randomY = Math.random() * maxY;
+
+      noBtn.style.left = randomX + "px";
+      noBtn.style.top = randomY + "px";
+    }
+
+    function clearNoClasses() {
+      noBtn.classList.remove("is-melting", "is-fading", "is-spinning", "is-teleporting");
+      noBtn.style.opacity = "";
+      noBtn.style.transform = "";
+      noBtn.style.filter = "";
+    }
+
+    let isAnimatingNo = false;
+
+    function doRandomEffect() {
+      if (isAnimatingNo) return;
+      isAnimatingNo = true;
+
+      const effects = ["melt", "fade", "spin", "teleport", "run"];
+      const choice = effects[Math.floor(Math.random() * effects.length)];
+
+      switch (choice) {
+        case "melt":
+          clearNoClasses();
+          noBtn.classList.add("is-melting");
+          break;
+        case "fade":
+          clearNoClasses();
+          noBtn.classList.add("is-fading");
+          break;
+        case "spin":
+          clearNoClasses();
+          noBtn.classList.add("is-spinning");
+          break;
+        case "teleport":
+          randomizeNoPosition();
+          clearNoClasses();
+          noBtn.classList.add("is-teleporting");
+          break;
+        case "run":
+        default:
+          clearNoClasses();
+          randomizeNoPosition();
+          setTimeout(() => {
+            isAnimatingNo = false;
+          }, 120);
+          break;
+      }
+    }
+
+    noBtn.addEventListener("animationend", (e) => {
+      if (
+        e.animationName === "melt" ||
+        e.animationName === "fadeShrink" ||
+        e.animationName === "spinDisappear"
+      ) {
+        randomizeNoPosition();
+        clearNoClasses();
+        isAnimatingNo = false;
+      } else if (e.animationName === "teleport") {
+        clearNoClasses();
+        isAnimatingNo = false;
+      }
+    });
+
+    noBtn.addEventListener("mouseenter", () => {
+      doRandomEffect();
+    });
+
+    noBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      doRandomEffect();
+    });
+
+    yesBtn.addEventListener("click", () => {
+      message.classList.add("visible");
+      yesBtn.disabled = true;
+      yesBtn.textContent = "You said YES! 💚";
+      noBtn.style.display = "none";
+    });
+  </script>
+</body>
+</html>
