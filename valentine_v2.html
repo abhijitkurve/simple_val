@@ -347,6 +347,19 @@
         min-height: 380px;
         padding: 32px 20px 40px;
       }
+      
+      /* Mobile background images - keep side by side but adjust sizing */
+      body::before {
+        background-size: auto 80%;
+        background-position: left center;
+        opacity: 0.3;
+      }
+      
+      body::after {
+        background-size: auto 80%;
+        background-position: right center;
+        opacity: 0.3;
+      }
     }
   </style>
 </head>
@@ -374,11 +387,11 @@
 
   <div class="container">
     <div class="emoji-row">❤️ 💘 💖 💝 💗</div>
-    <div class="title">My Dearest Mon,</div>
+    <div class="title">For My Favorite Person</div>
+    <div class="subtitle">There is only one correct answer. Choose wisely. 😉</div>
 
     <div class="question">Will you be my Valentine?</div>
 
-    <div class="subtitle">There is only one correct answer. Choose wisely. 😉</div>
     <div class="buttons-wrapper" id="buttonsArea">
       <button class="btn btn-yes" id="yesBtn">Yes 💚</button>
       <button class="btn btn-no" id="noBtn">No 💔</button>
